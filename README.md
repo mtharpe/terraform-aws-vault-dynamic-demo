@@ -2,8 +2,6 @@
 
 Using long lived static AWS credentials for Terraform runs can be dangerous. By leveraging the [Terraform Vault provider](https://www.terraform.io/docs/providers/vault/), you can generate short lived AWS credentials for each Terraform run that are automatically revoked after the run.
 
-[![Dynamic AWS Credentials Video](http://img.youtube.com/vi/0c3HUdZclTQ/0.jpg)](https://www.youtube.com/watch?v=0c3HUdZclTQ)
-
 ## Reference Material
 - [HashiCorp's Vault](https://www.vaultproject.io/)
 - [Terraform Vault provider](https://www.terraform.io/docs/providers/vault/)
