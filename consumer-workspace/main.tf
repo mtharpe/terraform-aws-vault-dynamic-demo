@@ -17,10 +17,8 @@ data "terraform_remote_state" "producer" {
 }
 
 data "vault_aws_access_credentials" "creds" {
-  # backend = "${data.terraform_remote_state.producer.backend}"
-  # role    = "${data.terraform_remote_state.producer.role}"
-  backend = "dynamic-aws-creds-producer-path"
-  role    = "dynamic-aws-creds-producer-role"
+  backend = "${data.terraform_remote_state.producer.outputs.backend}"
+  role    = "${data.terraform_remote_state.producer.outputs.role}"
 }
 
 provider "aws" {
