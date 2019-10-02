@@ -5,9 +5,10 @@
 Using long lived static AWS credentials for Terraform runs can be dangerous. By leveraging the [Terraform Vault provider](https://www.terraform.io/docs/providers/vault/), you can generate short lived AWS credentials for each Terraform run that are automatically revoked after the run.
 
 ## Reference Material
-- [HashiCorp's Vault](https://www.vaultproject.io/)
-- [Terraform Vault provider](https://www.terraform.io/docs/providers/vault/)
-- [Vault AWS Secret Engine](https://www.vaultproject.io/docs/secrets/aws/index.html)
+
+-   [HashiCorp's Vault](https://www.vaultproject.io/)
+-   [Terraform Vault provider](https://www.terraform.io/docs/providers/vault/)
+-   [Vault AWS Secret Engine](https://www.vaultproject.io/docs/secrets/aws/index.html)
 
 ## Estimated Time to Complete
 
@@ -45,8 +46,8 @@ The "Producer" will be responsible for configuring Vault's [AWS Secrets Engine](
 
 ## Prerequisites
 
-1. [Download HashiCorp's Terraform](https://www.terraform.io/downloads.html)
-1. [Download HashiCorp's Vault](https://www.vaultproject.io/downloads.html)
+1.  [Download HashiCorp's Terraform](https://www.terraform.io/downloads.html)
+2.  [Download HashiCorp's Vault](https://www.vaultproject.io/downloads.html)
 
 ## TL;DR
 
@@ -98,7 +99,7 @@ We will start by starting a Vault server. Open up a separate terminal window and
 
 #### CLI
 
-- [Starting a Vault Dev Server](https://www.vaultproject.io/intro/getting-started/dev-server.html#starting-the-dev-server)
+-   [Starting a Vault Dev Server](https://www.vaultproject.io/intro/getting-started/dev-server.html#starting-the-dev-server)
 
 ##### Request
 
@@ -128,78 +129,74 @@ $ terraform destroy --force
 # Update "Producer" Workspace IAM Policy
 $ cd ../producer-workspace
 $ terraform plan
-
-
 ```
 
 ##### Response
 
-```
-==> Vault server configuration:
+    ==> Vault server configuration:
 
-                     Cgo: disabled
-         Cluster Address: https://127.0.0.1:8201
-              Listener 1: tcp (addr: "127.0.0.1:8200", cluster address: "127.0.0.1:8201", tls: "disabled")
-               Log Level: info
-                   Mlock: supported: false, enabled: false
-        Redirect Address: http://127.0.0.1:8200
-                 Storage: inmem
-                 Version: Vault v0.9.3
-             Version Sha: 5acd6a21d5a69ab49d0f7c0bf540123a9b2c696d
+                         Cgo: disabled
+             Cluster Address: https://127.0.0.1:8201
+                  Listener 1: tcp (addr: "127.0.0.1:8200", cluster address: "127.0.0.1:8201", tls: "disabled")
+                   Log Level: info
+                       Mlock: supported: false, enabled: false
+            Redirect Address: http://127.0.0.1:8200
+                     Storage: inmem
+                     Version: Vault v0.9.3
+                 Version Sha: 5acd6a21d5a69ab49d0f7c0bf540123a9b2c696d
 
-WARNING! dev mode is enabled! In this mode, Vault runs entirely in-memory
-and starts unsealed with a single unseal key. The root token is already
-authenticated to the CLI, so you can immediately begin using Vault.
+    WARNING! dev mode is enabled! In this mode, Vault runs entirely in-memory
+    and starts unsealed with a single unseal key. The root token is already
+    authenticated to the CLI, so you can immediately begin using Vault.
 
-You may need to set the following environment variable:
+    You may need to set the following environment variable:
 
-    $ export VAULT_ADDR='http://127.0.0.1:8200'
+        $ export VAULT_ADDR='http://127.0.0.1:8200'
 
-The unseal key and root token are displayed below in case you want to
-seal/unseal the Vault or re-authenticate.
+    The unseal key and root token are displayed below in case you want to
+    seal/unseal the Vault or re-authenticate.
 
-Unseal Key: vfFcgKeoHUoIDNUNqQsrzl6Y0kASr9AZ1QCnsd6tF2k=
-Root Token: root
+    Unseal Key: vfFcgKeoHUoIDNUNqQsrzl6Y0kASr9AZ1QCnsd6tF2k=
+    Root Token: root
 
-Development mode should NOT be used in production installations!
+    Development mode should NOT be used in production installations!
 
-==> Vault server started! Log data will stream in below:
+    ==> Vault server started! Log data will stream in below:
 
-2018/02/09 18:16:46.245058 [INFO ] core: security barrier not initialized
-2018/02/09 18:16:46.246399 [INFO ] core: security barrier initialized: shares=1 threshold=1
-2018/02/09 18:16:46.247021 [INFO ] core: post-unseal setup starting
-2018/02/09 18:16:46.258342 [INFO ] core: loaded wrapping token key
-2018/02/09 18:16:46.258351 [INFO ] core: successfully setup plugin catalog: plugin-directory=
-2018/02/09 18:16:46.259352 [INFO ] core: successfully mounted backend: type=kv path=secret/
-2018/02/09 18:16:46.259382 [INFO ] core: successfully mounted backend: type=cubbyhole path=cubbyhole/
-2018/02/09 18:16:46.259705 [INFO ] core: successfully mounted backend: type=system path=sys/
-2018/02/09 18:16:46.259866 [INFO ] core: successfully mounted backend: type=identity path=identity/
-2018/02/09 18:16:46.261878 [INFO ] expiration: restoring leases
-2018/02/09 18:16:46.261885 [INFO ] rollback: starting rollback manager
-2018/02/09 18:16:46.262925 [INFO ] expiration: lease restore complete
-2018/02/09 18:16:46.263967 [INFO ] identity: entities restored
-2018/02/09 18:16:46.263982 [INFO ] identity: groups restored
-2018/02/09 18:16:46.264010 [INFO ] core: post-unseal setup complete
-2018/02/09 18:16:46.264555 [INFO ] core: root token generated
-2018/02/09 18:16:46.264559 [INFO ] core: pre-seal teardown starting
-2018/02/09 18:16:46.264564 [INFO ] core: cluster listeners not running
-2018/02/09 18:16:46.264578 [INFO ] rollback: stopping rollback manager
-2018/02/09 18:16:46.264616 [INFO ] core: pre-seal teardown complete
-2018/02/09 18:16:46.264697 [INFO ] core: vault is unsealed
-2018/02/09 18:16:46.264708 [INFO ] core: post-unseal setup starting
-2018/02/09 18:16:46.264748 [INFO ] core: loaded wrapping token key
-2018/02/09 18:16:46.264750 [INFO ] core: successfully setup plugin catalog: plugin-directory=
-2018/02/09 18:16:46.264873 [INFO ] core: successfully mounted backend: type=kv path=secret/
-2018/02/09 18:16:46.264944 [INFO ] core: successfully mounted backend: type=system path=sys/
-2018/02/09 18:16:46.265047 [INFO ] core: successfully mounted backend: type=identity path=identity/
-2018/02/09 18:16:46.265053 [INFO ] core: successfully mounted backend: type=cubbyhole path=cubbyhole/
-2018/02/09 18:16:46.265427 [INFO ] expiration: restoring leases
-2018/02/09 18:16:46.265433 [INFO ] rollback: starting rollback manager
-2018/02/09 18:16:46.265518 [INFO ] expiration: lease restore complete
-2018/02/09 18:16:46.265522 [INFO ] identity: entities restored
-2018/02/09 18:16:46.265541 [INFO ] identity: groups restored
-2018/02/09 18:16:46.265549 [INFO ] core: post-unseal setup complete
-```
+    2018/02/09 18:16:46.245058 [INFO ] core: security barrier not initialized
+    2018/02/09 18:16:46.246399 [INFO ] core: security barrier initialized: shares=1 threshold=1
+    2018/02/09 18:16:46.247021 [INFO ] core: post-unseal setup starting
+    2018/02/09 18:16:46.258342 [INFO ] core: loaded wrapping token key
+    2018/02/09 18:16:46.258351 [INFO ] core: successfully setup plugin catalog: plugin-directory=
+    2018/02/09 18:16:46.259352 [INFO ] core: successfully mounted backend: type=kv path=secret/
+    2018/02/09 18:16:46.259382 [INFO ] core: successfully mounted backend: type=cubbyhole path=cubbyhole/
+    2018/02/09 18:16:46.259705 [INFO ] core: successfully mounted backend: type=system path=sys/
+    2018/02/09 18:16:46.259866 [INFO ] core: successfully mounted backend: type=identity path=identity/
+    2018/02/09 18:16:46.261878 [INFO ] expiration: restoring leases
+    2018/02/09 18:16:46.261885 [INFO ] rollback: starting rollback manager
+    2018/02/09 18:16:46.262925 [INFO ] expiration: lease restore complete
+    2018/02/09 18:16:46.263967 [INFO ] identity: entities restored
+    2018/02/09 18:16:46.263982 [INFO ] identity: groups restored
+    2018/02/09 18:16:46.264010 [INFO ] core: post-unseal setup complete
+    2018/02/09 18:16:46.264555 [INFO ] core: root token generated
+    2018/02/09 18:16:46.264559 [INFO ] core: pre-seal teardown starting
+    2018/02/09 18:16:46.264564 [INFO ] core: cluster listeners not running
+    2018/02/09 18:16:46.264578 [INFO ] rollback: stopping rollback manager
+    2018/02/09 18:16:46.264616 [INFO ] core: pre-seal teardown complete
+    2018/02/09 18:16:46.264697 [INFO ] core: vault is unsealed
+    2018/02/09 18:16:46.264708 [INFO ] core: post-unseal setup starting
+    2018/02/09 18:16:46.264748 [INFO ] core: loaded wrapping token key
+    2018/02/09 18:16:46.264750 [INFO ] core: successfully setup plugin catalog: plugin-directory=
+    2018/02/09 18:16:46.264873 [INFO ] core: successfully mounted backend: type=kv path=secret/
+    2018/02/09 18:16:46.264944 [INFO ] core: successfully mounted backend: type=system path=sys/
+    2018/02/09 18:16:46.265047 [INFO ] core: successfully mounted backend: type=identity path=identity/
+    2018/02/09 18:16:46.265053 [INFO ] core: successfully mounted backend: type=cubbyhole path=cubbyhole/
+    2018/02/09 18:16:46.265427 [INFO ] expiration: restoring leases
+    2018/02/09 18:16:46.265433 [INFO ] rollback: starting rollback manager
+    2018/02/09 18:16:46.265518 [INFO ] expiration: lease restore complete
+    2018/02/09 18:16:46.265522 [INFO ] identity: entities restored
+    2018/02/09 18:16:46.265541 [INFO ] identity: groups restored
+    2018/02/09 18:16:46.265549 [INFO ] core: post-unseal setup complete
 
 ### Step 2: Configure Environment Variables
 
@@ -246,7 +243,7 @@ Take a look at the [producer-workspace/main.tf](producer-workspace/main.tf) Terr
 
 #### CLI
 
-- [terraform init](https://www.terraform.io/docs/commands/init.html)
+-   [terraform init](https://www.terraform.io/docs/commands/init.html)
 
 ##### Request
 
@@ -257,36 +254,34 @@ $ terraform init
 
 ##### Response
 
-```
-Initializing the backend...
+    Initializing the backend...
 
-Successfully configured the backend "local"! Terraform will automatically
-use this backend unless the backend configuration changes.
+    Successfully configured the backend "local"! Terraform will automatically
+    use this backend unless the backend configuration changes.
 
-Initializing provider plugins...
-- Checking for available provider plugins on https://releases.hashicorp.com...
-- Downloading plugin for provider "vault" (1.0.0)...
+    Initializing provider plugins...
+    - Checking for available provider plugins on https://releases.hashicorp.com...
+    - Downloading plugin for provider "vault" (1.0.0)...
 
-The following providers do not have any version constraints in configuration,
-so the latest version was installed.
+    The following providers do not have any version constraints in configuration,
+    so the latest version was installed.
 
-To prevent automatic upgrades to new major versions that may contain breaking
-changes, it is recommended to add version = "..." constraints to the
-corresponding provider blocks in configuration, with the constraint strings
-suggested below.
+    To prevent automatic upgrades to new major versions that may contain breaking
+    changes, it is recommended to add version = "..." constraints to the
+    corresponding provider blocks in configuration, with the constraint strings
+    suggested below.
 
-* provider.vault: version = "~> 1.0"
+    * provider.vault: version = "~> 1.0"
 
-Terraform has been successfully initialized!
+    Terraform has been successfully initialized!
 
-You may now begin working with Terraform. Try running "terraform plan" to see
-any changes that are required for your infrastructure. All Terraform commands
-should now work.
+    You may now begin working with Terraform. Try running "terraform plan" to see
+    any changes that are required for your infrastructure. All Terraform commands
+    should now work.
 
-If you ever set or change modules or backend configuration for Terraform,
-rerun this command to reinitialize your working directory. If you forget, other
-commands will detect it and remind you to do so if necessary.
-```
+    If you ever set or change modules or backend configuration for Terraform,
+    rerun this command to reinitialize your working directory. If you forget, other
+    commands will detect it and remind you to do so if necessary.
 
 ### Step 4: "Producer" Workspace Plan
 
@@ -296,7 +291,7 @@ Notice that Terraform's plan is to mount the [AWS Secrets Engine](https://www.va
 
 #### CLI
 
-- [terraform plan](https://www.terraform.io/docs/commands/plan.html)
+-   [terraform plan](https://www.terraform.io/docs/commands/plan.html)
 
 ##### Request
 
@@ -306,56 +301,55 @@ $ terraform plan
 
 ##### Response
 
-```
-Refreshing Terraform state in-memory prior to plan...
-The refreshed state will be used to calculate this plan, but will not be
-persisted to local or remote state storage.
+    Refreshing Terraform state in-memory prior to plan...
+    The refreshed state will be used to calculate this plan, but will not be
+    persisted to local or remote state storage.
 
 
-------------------------------------------------------------------------
+    ------------------------------------------------------------------------
 
-An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-  + create
+    An execution plan has been generated and is shown below.
+    Resource actions are indicated with the following symbols:
+      + create
 
-Terraform will perform the following actions:
+    Terraform will perform the following actions:
 
-  + vault_aws_secret_backend.aws
-      id:                        <computed>
-      access_key:                <sensitive>
-      default_lease_ttl_seconds: "120"
-      max_lease_ttl_seconds:     "240"
-      path:                      "dynamic-aws-creds-producer-path"
-      region:                    <computed>
-      secret_key:                <sensitive>
+      + vault_aws_secret_backend.aws
+          id:                        <computed>
+          access_key:                <sensitive>
+          default_lease_ttl_seconds: "120"
+          max_lease_ttl_seconds:     "240"
+          path:                      "dynamic-aws-creds-producer-path"
+          region:                    <computed>
+          secret_key:                <sensitive>
 
-  + vault_aws_secret_backend_role.producer
-      id:                        <computed>
-      backend:                   "dynamic-aws-creds-producer-path"
-      name:                      "dynamic-aws-creds-producer-role"
-      policy:                    "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:*\",\n        \"ec2:*\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
+      + vault_aws_secret_backend_role.producer
+          id:                        <computed>
+          backend:                   "dynamic-aws-creds-producer-path"
+          name:                      "dynamic-aws-creds-producer-role"
+          policy:                    "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:*\",\n        \"ec2:*\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
 
 
-Plan: 2 to add, 0 to change, 0 to destroy.
+    Plan: 2 to add, 0 to change, 0 to destroy.
 
-------------------------------------------------------------------------
+    ------------------------------------------------------------------------
 
-Note: You didn't specify an "-out" parameter to save this plan, so Terraform
-can't guarantee that exactly these actions will be performed if
-"terraform apply" is subsequently run.
-```
+    Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+    can't guarantee that exactly these actions will be performed if
+    "terraform apply" is subsequently run.
 
 ### Step 5: "Producer" Workspace Apply
 
 Run the `terraform apply` to actually provision the resources in the "Producer" Workspace. Based on the plan, we expect Terraform to...
 
-1. Use the AWS credentials supplied by the env vars in [Step 2](#step-2-configure-environment-variables) to mount the AWS Secret Engine in Vault under the path `dynamic-aws-creds-producer-path`.
-2. Configure a role for the [AWS Secrets Engine](https://www.vaultproject.io/docs/secrets/aws/index.html) named `dynamic-aws-creds-producer-role` with an IAM policy that allows it `iam:*` and `ec2:*` permissions.
-  - This role will be used by the "Consumer" Workspace to dynamically generate AWS credentials scoped with this IAM policy to be used by Terraform to provision an [`aws_instance`](https://www.terraform.io/docs/providers/aws/r/instance.html) resource.
+1.  Use the AWS credentials supplied by the env vars in [Step 2](#step-2-configure-environment-variables) to mount the AWS Secret Engine in Vault under the path `dynamic-aws-creds-producer-path`.
+2.  Configure a role for the [AWS Secrets Engine](https://www.vaultproject.io/docs/secrets/aws/index.html) named `dynamic-aws-creds-producer-role` with an IAM policy that allows it `iam:*` and `ec2:*` permissions.
+
+-   This role will be used by the "Consumer" Workspace to dynamically generate AWS credentials scoped with this IAM policy to be used by Terraform to provision an [`aws_instance`](https://www.terraform.io/docs/providers/aws/r/instance.html) resource.
 
 #### CLI
 
-- [terraform apply](https://www.terraform.io/docs/commands/apply.html)
+-   [terraform apply](https://www.terraform.io/docs/commands/apply.html)
 
 ##### Request
 
@@ -367,43 +361,39 @@ Notice we added the `-auto-approve` switch. This tells Terraform to just run the
 
 ##### Response
 
-```
-vault_aws_secret_backend.aws: Creating...
-  access_key:                "<sensitive>" => "<sensitive>"
-  default_lease_ttl_seconds: "" => "120"
-  max_lease_ttl_seconds:     "" => "240"
-  path:                      "" => "dynamic-aws-creds-producer-path"
-  region:                    "" => "<computed>"
-  secret_key:                "<sensitive>" => "<sensitive>"
-vault_aws_secret_backend.aws: Creation complete after 0s (ID: dynamic-aws-creds-producer-path)
-vault_aws_secret_backend_role.producer: Creating...
-  backend: "" => "dynamic-aws-creds-producer-path"
-  name:    "" => "dynamic-aws-creds-producer-role"
-  policy:  "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:*\",\n        \"ec2:*\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
-vault_aws_secret_backend_role.producer: Creation complete after 0s (ID: dynamic-aws-creds-producer-path/roles/dynamic-aws-creds-producer-role)
+    vault_aws_secret_backend.aws: Creating...
+      access_key:                "<sensitive>" => "<sensitive>"
+      default_lease_ttl_seconds: "" => "120"
+      max_lease_ttl_seconds:     "" => "240"
+      path:                      "" => "dynamic-aws-creds-producer-path"
+      region:                    "" => "<computed>"
+      secret_key:                "<sensitive>" => "<sensitive>"
+    vault_aws_secret_backend.aws: Creation complete after 0s (ID: dynamic-aws-creds-producer-path)
+    vault_aws_secret_backend_role.producer: Creating...
+      backend: "" => "dynamic-aws-creds-producer-path"
+      name:    "" => "dynamic-aws-creds-producer-role"
+      policy:  "" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:*\",\n        \"ec2:*\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
+    vault_aws_secret_backend_role.producer: Creation complete after 0s (ID: dynamic-aws-creds-producer-path/roles/dynamic-aws-creds-producer-role)
 
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+    Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
 
-The state of your infrastructure has been saved to the path
-below. This state is required to modify and destroy your
-infrastructure, so keep it safe. To inspect the complete state
-use the `terraform show` command.
+    The state of your infrastructure has been saved to the path
+    below. This state is required to modify and destroy your
+    infrastructure, so keep it safe. To inspect the complete state
+    use the `terraform show` command.
 
-State path: terraform.tfstate
+    State path: terraform.tfstate
 
-Outputs:
+    Outputs:
 
-backend = dynamic-aws-creds-producer-path
-role = dynamic-aws-creds-producer-role
-```
+    backend = dynamic-aws-creds-producer-path
+    role = dynamic-aws-creds-producer-role
 
 Notice there are 2 [Output Variables](https://www.terraform.io/intro/getting-started/outputs.html) named `backend` & `role`. These output variables will be used by the "Consumer" workspace in a later step.
 
 If you go to the terminal where your Vault server is running, you should see Vault output something similar to the below. This means Terraform was successfully able to mount the AWS Secrets Engine at the specified path. Although it's not output in the logs, the role has also been configured.
 
-```
-2018/02/10 19:23:37.072445 [INFO ] core: successful mount: path=dynamic-aws-creds-producer-path/ type=aws
-```
+    2018/02/10 19:23:37.072445 [INFO ] core: successful mount: path=dynamic-aws-creds-producer-path/ type=aws
 
 ### Step 6: "Consumer" Workspace Init
 
@@ -413,7 +403,7 @@ Take a look at the [consumer-workspace/main.tf](consumer-workspace/main.tf) Terr
 
 #### CLI
 
-- [terraform init](https://www.terraform.io/docs/commands/init.html)
+-   [terraform init](https://www.terraform.io/docs/commands/init.html)
 
 ##### Request
 
@@ -424,38 +414,36 @@ $ terraform init
 
 ##### Response
 
-```
-Initializing the backend...
+    Initializing the backend...
 
-Successfully configured the backend "local"! Terraform will automatically
-use this backend unless the backend configuration changes.
+    Successfully configured the backend "local"! Terraform will automatically
+    use this backend unless the backend configuration changes.
 
-Initializing provider plugins...
-- Checking for available provider plugins on https://releases.hashicorp.com...
-- Downloading plugin for provider "aws" (1.9.0)...
-- Downloading plugin for provider "vault" (1.0.0)...
+    Initializing provider plugins...
+    - Checking for available provider plugins on https://releases.hashicorp.com...
+    - Downloading plugin for provider "aws" (1.9.0)...
+    - Downloading plugin for provider "vault" (1.0.0)...
 
-The following providers do not have any version constraints in configuration,
-so the latest version was installed.
+    The following providers do not have any version constraints in configuration,
+    so the latest version was installed.
 
-To prevent automatic upgrades to new major versions that may contain breaking
-changes, it is recommended to add version = "..." constraints to the
-corresponding provider blocks in configuration, with the constraint strings
-suggested below.
+    To prevent automatic upgrades to new major versions that may contain breaking
+    changes, it is recommended to add version = "..." constraints to the
+    corresponding provider blocks in configuration, with the constraint strings
+    suggested below.
 
-* provider.aws: version = "~> 1.9"
-* provider.vault: version = "~> 1.0"
+    * provider.aws: version = "~> 1.9"
+    * provider.vault: version = "~> 1.0"
 
-Terraform has been successfully initialized!
+    Terraform has been successfully initialized!
 
-You may now begin working with Terraform. Try running "terraform plan" to see
-any changes that are required for your infrastructure. All Terraform commands
-should now work.
+    You may now begin working with Terraform. Try running "terraform plan" to see
+    any changes that are required for your infrastructure. All Terraform commands
+    should now work.
 
-If you ever set or change modules or backend configuration for Terraform,
-rerun this command to reinitialize your working directory. If you forget, other
-commands will detect it and remind you to do so if necessary.
-```
+    If you ever set or change modules or backend configuration for Terraform,
+    rerun this command to reinitialize your working directory. If you forget, other
+    commands will detect it and remind you to do so if necessary.
 
 ### Step 7: "Consumer" Workspace Plan to Provision EC2 Instance
 
@@ -469,11 +457,11 @@ The reason the IAM credentials were created is we have a [`vault_aws_access_cred
 
 These credentials are generated by Vault with the appropriate [IAM policy](https://www.terraform.io/docs/providers/vault/r/aws_secret_backend_role.html#policy) configured in the [`vault_aws_secret_backend_role` role](https://www.terraform.io/docs/providers/vault/r/aws_secret_backend_role.html) resource, and a [`default_lease`](https://www.terraform.io/docs/providers/vault/r/aws_secret_backend.html#default_lease_ttl_seconds) and [`max_lease_ttl`](https://www.terraform.io/docs/providers/vault/r/aws_secret_backend.html#max_lease_ttl_seconds) configured on the [AWS Secret Engine](https://www.terraform.io/docs/providers/vault/r/aws_secret_backend.html). These resources were configured by the "Producer" in the [producer-workspace/main.tf#L13-L40](producer-workspace/main.tf#L13-L40) Terraform template.
 
-Because the `default_lease_ttl_seconds ` is set to `120` seconds, Vault will revoke those IAM credentials and they will be removed from the AWS IAM console after `120` seconds. Every Terraform run moving forward will now use it's own unique set of AWS IAM credentials that are scoped to whatever the "Producer" has defined!
+Because the `default_lease_ttl_seconds` is set to `120` seconds, Vault will revoke those IAM credentials and they will be removed from the AWS IAM console after `120` seconds. Every Terraform run moving forward will now use it's own unique set of AWS IAM credentials that are scoped to whatever the "Producer" has defined!
 
 #### CLI
 
-- [terraform plan](https://www.terraform.io/docs/commands/plan.html)
+-   [terraform plan](https://www.terraform.io/docs/commands/plan.html)
 
 ##### Request
 
@@ -483,64 +471,62 @@ $ terraform plan
 
 ##### Response
 
-```
-Refreshing Terraform state in-memory prior to plan...
-The refreshed state will be used to calculate this plan, but will not be
-persisted to local or remote state storage.
+    Refreshing Terraform state in-memory prior to plan...
+    The refreshed state will be used to calculate this plan, but will not be
+    persisted to local or remote state storage.
 
-data.terraform_remote_state.producer: Refreshing state...
-data.vault_aws_access_credentials.creds: Refreshing state...
-data.aws_ami.ubuntu: Refreshing state...
+    data.terraform_remote_state.producer: Refreshing state...
+    data.vault_aws_access_credentials.creds: Refreshing state...
+    data.aws_ami.ubuntu: Refreshing state...
 
-------------------------------------------------------------------------
+    ------------------------------------------------------------------------
 
-An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-  + create
+    An execution plan has been generated and is shown below.
+    Resource actions are indicated with the following symbols:
+      + create
 
-Terraform will perform the following actions:
+    Terraform will perform the following actions:
 
-  + aws_instance.main
-      id:                           <computed>
-      ami:                          "ami-a22323d8"
-      associate_public_ip_address:  <computed>
-      availability_zone:            <computed>
-      ebs_block_device.#:           <computed>
-      ephemeral_block_device.#:     <computed>
-      instance_state:               <computed>
-      instance_type:                "t2.nano"
-      ipv6_address_count:           <computed>
-      ipv6_addresses.#:             <computed>
-      key_name:                     <computed>
-      network_interface.#:          <computed>
-      network_interface_id:         <computed>
-      placement_group:              <computed>
-      primary_network_interface_id: <computed>
-      private_dns:                  <computed>
-      private_ip:                   <computed>
-      public_dns:                   <computed>
-      public_ip:                    <computed>
-      root_block_device.#:          <computed>
-      security_groups.#:            <computed>
-      source_dest_check:            "true"
-      subnet_id:                    <computed>
-      tags.%:                       "3"
-      tags.Name:                    "dynamic-aws-creds-consumer"
-      tags.TTL:                     "1h"
-      tags.owner:                   "dynamic-aws-creds-consumer-guide"
-      tenancy:                      <computed>
-      volume_tags.%:                <computed>
-      vpc_security_group_ids.#:     <computed>
+      + aws_instance.main
+          id:                           <computed>
+          ami:                          "ami-a22323d8"
+          associate_public_ip_address:  <computed>
+          availability_zone:            <computed>
+          ebs_block_device.#:           <computed>
+          ephemeral_block_device.#:     <computed>
+          instance_state:               <computed>
+          instance_type:                "t2.nano"
+          ipv6_address_count:           <computed>
+          ipv6_addresses.#:             <computed>
+          key_name:                     <computed>
+          network_interface.#:          <computed>
+          network_interface_id:         <computed>
+          placement_group:              <computed>
+          primary_network_interface_id: <computed>
+          private_dns:                  <computed>
+          private_ip:                   <computed>
+          public_dns:                   <computed>
+          public_ip:                    <computed>
+          root_block_device.#:          <computed>
+          security_groups.#:            <computed>
+          source_dest_check:            "true"
+          subnet_id:                    <computed>
+          tags.%:                       "3"
+          tags.Name:                    "dynamic-aws-creds-consumer"
+          tags.TTL:                     "1h"
+          tags.owner:                   "dynamic-aws-creds-consumer-guide"
+          tenancy:                      <computed>
+          volume_tags.%:                <computed>
+          vpc_security_group_ids.#:     <computed>
 
 
-Plan: 1 to add, 0 to change, 0 to destroy.
+    Plan: 1 to add, 0 to change, 0 to destroy.
 
-------------------------------------------------------------------------
+    ------------------------------------------------------------------------
 
-Note: You didn't specify an "-out" parameter to save this plan, so Terraform
-can't guarantee that exactly these actions will be performed if
-"terraform apply" is subsequently run.
-```
+    Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+    can't guarantee that exactly these actions will be performed if
+    "terraform apply" is subsequently run.
 
 ![Dynamic IAM Creds](assets/dynamic-iam-creds.png)
 
@@ -556,7 +542,7 @@ Just like the `terraform plan`, the short lived IAM credentials used by Terrafor
 
 #### CLI
 
-- [terraform apply](https://www.terraform.io/docs/commands/apply.html)
+-   [terraform apply](https://www.terraform.io/docs/commands/apply.html)
 
 ##### Request
 
@@ -568,53 +554,51 @@ Notice we added the `-auto-approve` switch. This tells Terraform to just run the
 
 ##### Response
 
-```
-data.terraform_remote_state.producer: Refreshing state...
-data.vault_aws_access_credentials.creds: Refreshing state...
-data.aws_ami.ubuntu: Refreshing state...
-aws_instance.main: Creating...
-  ami:                          "" => "ami-a22323d8"
-  associate_public_ip_address:  "" => "<computed>"
-  availability_zone:            "" => "<computed>"
-  ebs_block_device.#:           "" => "<computed>"
-  ephemeral_block_device.#:     "" => "<computed>"
-  instance_state:               "" => "<computed>"
-  instance_type:                "" => "t2.nano"
-  ipv6_address_count:           "" => "<computed>"
-  ipv6_addresses.#:             "" => "<computed>"
-  key_name:                     "" => "<computed>"
-  network_interface.#:          "" => "<computed>"
-  network_interface_id:         "" => "<computed>"
-  placement_group:              "" => "<computed>"
-  primary_network_interface_id: "" => "<computed>"
-  private_dns:                  "" => "<computed>"
-  private_ip:                   "" => "<computed>"
-  public_dns:                   "" => "<computed>"
-  public_ip:                    "" => "<computed>"
-  root_block_device.#:          "" => "<computed>"
-  security_groups.#:            "" => "<computed>"
-  source_dest_check:            "" => "true"
-  subnet_id:                    "" => "<computed>"
-  tags.%:                       "" => "3"
-  tags.Name:                    "" => "dynamic-aws-creds-consumer"
-  tags.TTL:                     "" => "1h"
-  tags.owner:                   "" => "dynamic-aws-creds-consumer-guide"
-  tenancy:                      "" => "<computed>"
-  volume_tags.%:                "" => "<computed>"
-  vpc_security_group_ids.#:     "" => "<computed>"
-aws_instance.main: Still creating... (10s elapsed)
-aws_instance.main: Still creating... (20s elapsed)
-aws_instance.main: Creation complete after 25s (ID: i-0c47c6d46f0a71fb8)
+    data.terraform_remote_state.producer: Refreshing state...
+    data.vault_aws_access_credentials.creds: Refreshing state...
+    data.aws_ami.ubuntu: Refreshing state...
+    aws_instance.main: Creating...
+      ami:                          "" => "ami-a22323d8"
+      associate_public_ip_address:  "" => "<computed>"
+      availability_zone:            "" => "<computed>"
+      ebs_block_device.#:           "" => "<computed>"
+      ephemeral_block_device.#:     "" => "<computed>"
+      instance_state:               "" => "<computed>"
+      instance_type:                "" => "t2.nano"
+      ipv6_address_count:           "" => "<computed>"
+      ipv6_addresses.#:             "" => "<computed>"
+      key_name:                     "" => "<computed>"
+      network_interface.#:          "" => "<computed>"
+      network_interface_id:         "" => "<computed>"
+      placement_group:              "" => "<computed>"
+      primary_network_interface_id: "" => "<computed>"
+      private_dns:                  "" => "<computed>"
+      private_ip:                   "" => "<computed>"
+      public_dns:                   "" => "<computed>"
+      public_ip:                    "" => "<computed>"
+      root_block_device.#:          "" => "<computed>"
+      security_groups.#:            "" => "<computed>"
+      source_dest_check:            "" => "true"
+      subnet_id:                    "" => "<computed>"
+      tags.%:                       "" => "3"
+      tags.Name:                    "" => "dynamic-aws-creds-consumer"
+      tags.TTL:                     "" => "1h"
+      tags.owner:                   "" => "dynamic-aws-creds-consumer-guide"
+      tenancy:                      "" => "<computed>"
+      volume_tags.%:                "" => "<computed>"
+      vpc_security_group_ids.#:     "" => "<computed>"
+    aws_instance.main: Still creating... (10s elapsed)
+    aws_instance.main: Still creating... (20s elapsed)
+    aws_instance.main: Creation complete after 25s (ID: i-0c47c6d46f0a71fb8)
 
-Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+    Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
-The state of your infrastructure has been saved to the path
-below. This state is required to modify and destroy your
-infrastructure, so keep it safe. To inspect the complete state
-use the `terraform show` command.
+    The state of your infrastructure has been saved to the path
+    below. This state is required to modify and destroy your
+    infrastructure, so keep it safe. To inspect the complete state
+    use the `terraform show` command.
 
-State path: terraform.tfstate
-```
+    State path: terraform.tfstate
 
 Voila, our "Consumer" has successfully created the EC2 Instance resource without ever having long-lived AWS credentials locally.
 
@@ -626,7 +610,7 @@ Now let's cleanup the EC2 Instance created by Terraform. After destroying, you c
 
 #### CLI
 
-- [terraform destroy](https://www.terraform.io/docs/commands/destroy.html)
+-   [terraform destroy](https://www.terraform.io/docs/commands/destroy.html)
 
 ##### Request
 
@@ -638,18 +622,16 @@ Notice we're using the `--force` switch to prevent Terraform from prompting us t
 
 ##### Response
 
-```
-data.terraform_remote_state.producer: Refreshing state...
-data.vault_aws_access_credentials.creds: Refreshing state...
-data.aws_ami.ubuntu: Refreshing state...
-aws_instance.main: Refreshing state... (ID: i-0c47c6d46f0a71fb8)
-aws_instance.main: Destroying... (ID: i-0c47c6d46f0a71fb8)
-aws_instance.main: Still destroying... (ID: i-0c47c6d46f0a71fb8, 10s elapsed)
-aws_instance.main: Still destroying... (ID: i-0c47c6d46f0a71fb8, 20s elapsed)
-aws_instance.main: Destruction complete after 21s
+    data.terraform_remote_state.producer: Refreshing state...
+    data.vault_aws_access_credentials.creds: Refreshing state...
+    data.aws_ami.ubuntu: Refreshing state...
+    aws_instance.main: Refreshing state... (ID: i-0c47c6d46f0a71fb8)
+    aws_instance.main: Destroying... (ID: i-0c47c6d46f0a71fb8)
+    aws_instance.main: Still destroying... (ID: i-0c47c6d46f0a71fb8, 10s elapsed)
+    aws_instance.main: Still destroying... (ID: i-0c47c6d46f0a71fb8, 20s elapsed)
+    aws_instance.main: Destruction complete after 21s
 
-Destroy complete! Resources: 1 destroyed.
-```
+    Destroy complete! Resources: 1 destroyed.
 
 ### Step 10: "Producer" IAM Policy Update Plan
 
@@ -659,43 +641,39 @@ Previously, this would have required them to revoke every "Consumers" IAM creden
 
 To prove this, we will change the IAM policy in the [producer-workspace/main.tf](producer-workspace/main.tf#L27-L39) Terraform template from...
 
-```
-{
-  "Version": "2012-10-17",
-  "Statement": [
     {
-      "Effect": "Allow",
-      "Action": [
-        "iam:*", "ec2:*"
-      ],
-      "Resource": "*"
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "iam:*", "ec2:*"
+          ],
+          "Resource": "*"
+        }
+      ]
     }
-  ]
-}
-```
 
 to...
 
-```
-{
-  "Version": "2012-10-17",
-  "Statement": [
     {
-      "Effect": "Allow",
-      "Action": [
-        "iam:*"
-      ],
-      "Resource": "*"
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "iam:*"
+          ],
+          "Resource": "*"
+        }
+      ]
     }
-  ]
-}
-```
 
 This means that any "Consumer" should now not be allowed to provision any AWS EC2 resources.
 
 #### CLI
 
-- [terraform plan](https://www.terraform.io/docs/commands/plan.html)
+-   [terraform plan](https://www.terraform.io/docs/commands/plan.html)
 
 ##### Request
 
@@ -707,34 +685,32 @@ $ terraform plan
 
 ##### Response
 
-```
-Refreshing Terraform state in-memory prior to plan...
-The refreshed state will be used to calculate this plan, but will not be
-persisted to local or remote state storage.
+    Refreshing Terraform state in-memory prior to plan...
+    The refreshed state will be used to calculate this plan, but will not be
+    persisted to local or remote state storage.
 
-vault_aws_secret_backend.aws: Refreshing state... (ID: dynamic-aws-creds-producer-path)
-vault_aws_secret_backend_role.producer: Refreshing state... (ID: dynamic-aws-creds-producer-path/roles/dynamic-aws-creds-producer-role)
+    vault_aws_secret_backend.aws: Refreshing state... (ID: dynamic-aws-creds-producer-path)
+    vault_aws_secret_backend_role.producer: Refreshing state... (ID: dynamic-aws-creds-producer-path/roles/dynamic-aws-creds-producer-role)
 
-------------------------------------------------------------------------
+    ------------------------------------------------------------------------
 
-An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-  ~ update in-place
+    An execution plan has been generated and is shown below.
+    Resource actions are indicated with the following symbols:
+      ~ update in-place
 
-Terraform will perform the following actions:
+    Terraform will perform the following actions:
 
-  ~ vault_aws_secret_backend_role.producer
-      policy: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"iam:*\",\"ec2:*\"],\"Resource\":\"*\"}]}" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:*\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
+      ~ vault_aws_secret_backend_role.producer
+          policy: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"iam:*\",\"ec2:*\"],\"Resource\":\"*\"}]}" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:*\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
 
 
-Plan: 0 to add, 1 to change, 0 to destroy.
+    Plan: 0 to add, 1 to change, 0 to destroy.
 
-------------------------------------------------------------------------
+    ------------------------------------------------------------------------
 
-Note: You didn't specify an "-out" parameter to save this plan, so Terraform
-can't guarantee that exactly these actions will be performed if
-"terraform apply" is subsequently run.
-```
+    Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+    can't guarantee that exactly these actions will be performed if
+    "terraform apply" is subsequently run.
 
 ### Step 11: "Producer" Policy Update Apply
 
@@ -742,7 +718,7 @@ We will now apply those changes and update Vault role's policy.
 
 #### CLI
 
-- [terraform apply](https://www.terraform.io/docs/commands/apply.html)
+-   [terraform apply](https://www.terraform.io/docs/commands/apply.html)
 
 ##### Request
 
@@ -752,27 +728,25 @@ $ terraform apply -auto-approve
 
 ##### Response
 
-```
-vault_aws_secret_backend.aws: Refreshing state... (ID: dynamic-aws-creds-producer-path)
-vault_aws_secret_backend_role.producer: Refreshing state... (ID: dynamic-aws-creds-producer-path/roles/dynamic-aws-creds-producer-role)
-vault_aws_secret_backend_role.producer: Modifying... (ID: dynamic-aws-creds-producer-path/roles/dynamic-aws-creds-producer-role)
-  policy: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"iam:*\",\"ec2:*\"],\"Resource\":\"*\"}]}" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:*\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
-vault_aws_secret_backend_role.producer: Modifications complete after 0s (ID: dynamic-aws-creds-producer-path/roles/dynamic-aws-creds-producer-role)
+    vault_aws_secret_backend.aws: Refreshing state... (ID: dynamic-aws-creds-producer-path)
+    vault_aws_secret_backend_role.producer: Refreshing state... (ID: dynamic-aws-creds-producer-path/roles/dynamic-aws-creds-producer-role)
+    vault_aws_secret_backend_role.producer: Modifying... (ID: dynamic-aws-creds-producer-path/roles/dynamic-aws-creds-producer-role)
+      policy: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"iam:*\",\"ec2:*\"],\"Resource\":\"*\"}]}" => "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iam:*\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n"
+    vault_aws_secret_backend_role.producer: Modifications complete after 0s (ID: dynamic-aws-creds-producer-path/roles/dynamic-aws-creds-producer-role)
 
-Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+    Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 
-The state of your infrastructure has been saved to the path
-below. This state is required to modify and destroy your
-infrastructure, so keep it safe. To inspect the complete state
-use the `terraform show` command.
+    The state of your infrastructure has been saved to the path
+    below. This state is required to modify and destroy your
+    infrastructure, so keep it safe. To inspect the complete state
+    use the `terraform show` command.
 
-State path: terraform.tfstate
+    State path: terraform.tfstate
 
-Outputs:
+    Outputs:
 
-backend = dynamic-aws-creds-producer-path
-role = dynamic-aws-creds-producer-role
-```
+    backend = dynamic-aws-creds-producer-path
+    role = dynamic-aws-creds-producer-role
 
 ### Step 12: "Consumer" Workspace Plan to Provision EC2 Instance
 
@@ -782,7 +756,7 @@ Let's try it.
 
 #### CLI
 
-- [terraform plan](https://www.terraform.io/docs/commands/plan.html)
+-   [terraform plan](https://www.terraform.io/docs/commands/plan.html)
 
 ##### Request
 
@@ -793,22 +767,20 @@ $ terraform plan
 
 ##### Response
 
-```
-Refreshing Terraform state in-memory prior to plan...
-The refreshed state will be used to calculate this plan, but will not be
-persisted to local or remote state storage.
+    Refreshing Terraform state in-memory prior to plan...
+    The refreshed state will be used to calculate this plan, but will not be
+    persisted to local or remote state storage.
 
-data.terraform_remote_state.producer: Refreshing state...
-data.vault_aws_access_credentials.creds: Refreshing state...
-data.aws_ami.ubuntu: Refreshing state...
+    data.terraform_remote_state.producer: Refreshing state...
+    data.vault_aws_access_credentials.creds: Refreshing state...
+    data.aws_ami.ubuntu: Refreshing state...
 
-Error: Error refreshing state: 1 error(s) occurred:
+    Error: Error refreshing state: 1 error(s) occurred:
 
-* data.aws_ami.ubuntu: 1 error(s) occurred:
+    * data.aws_ami.ubuntu: 1 error(s) occurred:
 
-* data.aws_ami.ubuntu: data.aws_ami.ubuntu: UnauthorizedOperation: You are not authorized to perform this operation.
-	status code: 403, request id: 5f25a398-9417-4e16-9bae-f336d624e017
-```
+    * data.aws_ami.ubuntu: data.aws_ami.ubuntu: UnauthorizedOperation: You are not authorized to perform this operation.
+    	status code: 403, request id: 5f25a398-9417-4e16-9bae-f336d624e017
 
 As expected, our plan failed! The "Producer" would need to add the `ec2:*` permission back to the IAM policy for this plan to succeed.
 
