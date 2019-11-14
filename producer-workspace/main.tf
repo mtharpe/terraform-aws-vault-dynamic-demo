@@ -1,6 +1,12 @@
-variable "aws_access_key" { }
-variable "aws_secret_key" { }
-variable "name"           { default = "dynamic-aws-creds-producer" }
+variable "aws_access_key" {
+}
+
+variable "aws_secret_key" {
+}
+
+variable "name" {
+  default = "dynamic-aws-creds-producer"
+}
 
 terraform {
   backend "local" {
@@ -8,11 +14,12 @@ terraform {
   }
 }
 
-provider "vault" {}
+provider "vault" {
+}
 
 resource "vault_aws_secret_backend" "aws" {
-  access_key = "${var.aws_access_key}"
-  secret_key = "${var.aws_secret_key}"
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
   path       = "${var.name}-path"
 
   default_lease_ttl_seconds = "120"
@@ -20,8 +27,8 @@ resource "vault_aws_secret_backend" "aws" {
 }
 
 resource "vault_aws_secret_backend_role" "producer" {
-  backend = "${vault_aws_secret_backend.aws.path}"
-  name    = "${var.name}-role"
+  backend         = vault_aws_secret_backend.aws.path
+  name            = "${var.name}-role"
   credential_type = "iam_user"
 
   policy_document = <<EOF
@@ -38,12 +45,14 @@ resource "vault_aws_secret_backend_role" "producer" {
   ]
 }
 EOF
+
 }
 
 output "backend" {
-  value = "${vault_aws_secret_backend.aws.path}"
+  value = vault_aws_secret_backend.aws.path
 }
 
 output "role" {
-  value = "${vault_aws_secret_backend_role.producer.name}"
+  value = vault_aws_secret_backend_role.producer.name
 }
+
