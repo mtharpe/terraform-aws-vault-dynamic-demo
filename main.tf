@@ -1,37 +1,17 @@
-variable "name" {
-  default = "dynamic-aws-creds-consumer"
-}
-
-variable "path" {
-  default = "../producer-workspace/terraform.tfstate"
-}
-
-variable "ttl" {
-  default = "1"
-}
-
-terraform {
-  backend "local" {
-    path = "terraform.tfstate"
-  }
-}
-
-data "terraform_remote_state" "producer" {
-  backend = "local"
-
-  config = {
-    path = var.path
-  }
+provider "vault" {
+  address = var.vault_address
+  token = var.vault_token
 }
 
 data "vault_aws_access_credentials" "creds" {
-  backend = data.terraform_remote_state.producer.outputs.backend
-  role    = data.terraform_remote_state.producer.outputs.role
+  backend = "aws"
+  role    = "ec2"
 }
 
 provider "aws" {
   access_key = data.vault_aws_access_credentials.creds.access_key
   secret_key = data.vault_aws_access_credentials.creds.secret_key
+  region = "us-east-1"
 }
 
 data "aws_ami" "ubuntu" {
@@ -58,7 +38,6 @@ resource "aws_instance" "main" {
   tags = {
     Name  = var.name
     TTL   = var.ttl
-    owner = "${var.name}-guide"
   }
 }
 
