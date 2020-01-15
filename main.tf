@@ -38,6 +38,7 @@ resource "aws_instance" "main" {
   tags = {
     Name  = var.name
     TTL   = var.ttl
+    Test  = "true"
   }
 }
 
