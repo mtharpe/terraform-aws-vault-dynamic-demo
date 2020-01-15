@@ -34,7 +34,6 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "main" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.nano"
-  subnet_id     = "04edb16d"
 
   tags = {
     Name  = var.name
