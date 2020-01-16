@@ -793,3 +793,5 @@ Play around with the "Producer" permissions and the "Consumer" resources to get 
 Once finished, run `terraform destroy` in each "Producer" and "Consumer" workspace to ensure all resources are cleaned up.
 
 You can take your security to the next level by leveraging Terraform Enterprise's [Secure Storage of Variables](https://www.terraform.io/docs/enterprise/workspaces/variables.html#secure-storage-of-variables) to safely store sensitive variables like the Vault token used for authentication.
+
+### EOF
